@@ -1,0 +1,26 @@
+#主配置文件
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # 文件编码 UTF8
+  mandatory-file-encoding: UTF-8
+  devtools:
+    restart:
+      enabled: true
+
+
+mybatis-plus:
+  # mapper路径位置
+  mapper-locations: classpath:mapper/*.xml
+  type-handlers-package: com.duck.common.server.core.utils.JsonTypeHandler
+
+logging:
+  file:
+    name: mylogs.log
+    path: logs/
+
+traffic:
+  security:
+    jwt-key: wodndfjdf
+    token-expire-in: 86400
