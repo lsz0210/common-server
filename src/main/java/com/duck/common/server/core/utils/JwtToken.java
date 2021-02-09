@@ -21,24 +21,22 @@ public class JwtToken {
     private static String jwtKey;
     private static Integer expireTime;
 
-    @Value("${traffic.security.jwt-key}")
+    @Value("${duck.security.jwt-key}")
     public void setJwtKey(String jwtKey) {
         JwtToken.jwtKey = jwtKey;
     }
 
-    @Value("${traffic.security.token-expire-in}")
+    @Value("${duck.security.token-expire-in}")
     public void setExpireTime(Integer expireTime) {
         JwtToken.expireTime = expireTime;
     }
 
-    public static String getToken(Integer uid, String scope, String uucToken) {
+    public static String getToken(Integer uid, String scope) {
         Algorithm algorithm = Algorithm.HMAC256(JwtToken.jwtKey);
         Map<String, Date> map = JwtToken.calculateExpiredIssues();
-
         return JWT.create()
                 .withClaim("uid", uid)
                 .withClaim("scope", scope)
-                .withClaim("uucToken", uucToken)
                 .withExpiresAt(map.get("expiredTime"))
                 .withIssuedAt(map.get("now"))
                 .sign(algorithm);

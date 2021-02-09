@@ -5,10 +5,13 @@ import com.duck.common.server.core.LocalUser;
 import com.duck.common.server.core.exceptions.http.UnAuthenticatedException;
 import com.duck.common.server.core.utils.AnnotationUtil;
 import com.duck.common.server.core.utils.JwtToken;
+import com.duck.common.server.model.UserInfo;
+import com.duck.common.server.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,6 +32,9 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
 
     private static String startString = "Bearer";
     private static String spaceString = " ";
+
+    @Autowired
+    private UserInfoService userInfoService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -53,8 +59,7 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
                 .orElseThrow(() -> new UnAuthenticatedException(10004));
         boolean valid = hasPermission(map, scopeList);
         if (valid) {
-            // TODO: 2021-01-28 权限验证通过以后，加入线程数据，方便后续调用
-            //        setToThreadLocal(map);
+            setToThreadLocal(map);
         }
         return true;
     }
@@ -73,6 +78,7 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
 
     /**
      * 读取接口对应的权限列表
+     *
      * @param handler
      * @return
      */
@@ -108,13 +114,18 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
         }
     }
 
-    // TODO: 2021-01-28 权限验证通过以后，加入线程数据，方便后续调用
-    private void setToThreadLocal(Map<String, Claim> map) {
-        Integer uid = map.get("uid").asInt();
-//        if (user == null) {
-//            throw new UnAuthenticatedException(20002);
-//        }
-//        LocalUser.set(user);
-
+    /**
+     * 线程锁写入，防止线程泄露
+     *
+     * @param map
+     */
+    private synchronized void setToThreadLocal(Map<String, Claim> map) {
+        Long uid = map.get("uid").asLong();
+        logger.info("请求用户 ：{}", uid);
+        UserInfo userinfo = userInfoService.getById(uid);
+        if (userinfo == null) {
+            throw new UnAuthenticatedException(20002);
+        }
+        LocalUser.set(userinfo);
     }
 }

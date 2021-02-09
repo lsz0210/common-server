@@ -9,13 +9,28 @@
 package com.duck.common.server.core;
 
 
+import com.duck.common.server.model.UserInfo;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class LocalUser {
     private static ThreadLocal<Map<String, Object>> threadLocal = new ThreadLocal<>();
 
+
+    public static void set(UserInfo user) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", user);
+        LocalUser.threadLocal.set(map);
+    }
+
     public static void clear() {
         LocalUser.threadLocal.remove();
+    }
+
+    public static UserInfo getUser() {
+        Map<String, Object> map = LocalUser.threadLocal.get();
+        return (UserInfo) map.get("user");
     }
 
 }

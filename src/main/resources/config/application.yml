@@ -20,7 +20,7 @@ logging:
     name: mylogs.log
     path: logs/
 
-traffic:
+duck:
   security:
-    jwt-key: wodndfjdf
+    jwt-key: duckkey
     token-expire-in: 86400
