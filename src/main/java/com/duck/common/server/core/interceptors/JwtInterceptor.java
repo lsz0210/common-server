@@ -5,7 +5,10 @@ import com.duck.common.server.core.LocalUser;
 import com.duck.common.server.core.exceptions.http.UnAuthenticatedException;
 import com.duck.common.server.core.utils.AnnotationUtil;
 import com.duck.common.server.core.utils.JwtToken;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,7 +23,9 @@ import java.util.*;
  * @Author lsz
  * @Date 2020-08-12 13:55
  */
+@Slf4j
 public class JwtInterceptor extends HandlerInterceptorAdapter {
+    private static final Logger logger = LoggerFactory.getLogger(JwtInterceptor.class);
 
     private static String startString = "Bearer";
     private static String spaceString = " ";

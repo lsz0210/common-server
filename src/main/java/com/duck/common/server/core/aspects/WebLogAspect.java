@@ -1,9 +1,8 @@
 package com.duck.common.server.core.aspects;
 
+import com.duck.common.server.core.servlet.RequestWrapper;
 import com.duck.common.server.core.utils.JsonUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -12,7 +11,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * @author 5duck
@@ -47,15 +45,15 @@ public class WebLogAspect {
      * 1. 在执行目标方法之前执行，比如请求接口之前的登录验证;
      * 2. 在前置通知中设置请求日志信息，如开始时间，请求参数，注解内容等
      *
-     * @param joinPoint
      * @throws Throwable
      */
     @Before("webLogPointcut()")
-    public void doBefore(JoinPoint joinPoint) throws IOException {
+    public void doBefore() throws IOException {
 
         // 接收到请求，记录请求内容
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
+        RequestWrapper requestWrapper = new RequestWrapper(request);
         //打印请求的内容
         startTime = System.currentTimeMillis();
         log.info("请求信息 ： {}", JsonUtil.objectToJson(
@@ -64,7 +62,8 @@ public class WebLogAspect {
                         .url(request.getRequestURI())
                         .method(request.getMethod())
                         .addr(request.getRemoteAddr())
-                        .requestParam(Arrays.toString(joinPoint.getArgs()))
+                        .urlParam(JsonUtil.objectToJson(request.getParameterMap()))
+                        .requestParam(requestWrapper.getBody())
                         .build())
         );
     }

@@ -18,5 +18,6 @@ public class WebLogInput {
     private String url;
     private String method;
     private String addr;
+    private String urlParam;
     private String requestParam;
 }
