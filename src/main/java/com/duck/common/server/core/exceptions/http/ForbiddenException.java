@@ -7,12 +7,28 @@
  * @创建时间 2020-01-10 16:14
  */
 package com.duck.common.server.core.exceptions.http;
+
+import com.duck.common.server.core.enumerations.Code;
+import org.springframework.http.HttpStatus;
+
 /**
  * @author 5duck
  */
 public class ForbiddenException extends HttpException {
-    public ForbiddenException(int code){
+    public ForbiddenException(int code) {
         this.code = code;
-        this.httpStatusCode = 403;
+        this.httpStatusCode = HttpStatus.FORBIDDEN.value();
+    }
+
+    public ForbiddenException(String message) {
+        super(message);
+        this.code = Code.FORBIDDEN.getCode();
+        this.httpStatusCode = HttpStatus.FORBIDDEN.value();
+    }
+
+    public ForbiddenException(int code, String message) {
+        super(code, message);
+        this.code = code;
+        this.httpStatusCode = HttpStatus.FORBIDDEN.value();
     }
 }
