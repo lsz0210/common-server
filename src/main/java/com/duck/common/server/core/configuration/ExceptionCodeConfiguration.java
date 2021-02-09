@@ -15,7 +15,7 @@ import java.util.Map;
 @PropertySource(value = "classpath:config/exception-code.properties")
 @Component
 public class ExceptionCodeConfiguration {
-    private Map<Integer, String> codes = new HashMap<>();
+    private static Map<Integer, String> codes = new HashMap<>();
 
     public Map<Integer, String> getCodes() {
         return codes;
@@ -25,7 +25,7 @@ public class ExceptionCodeConfiguration {
         this.codes = codes;
     }
 
-    public String getMessage(int code) {
+    public static String getMessage(int code) {
         return codes.get(code);
     }
 }

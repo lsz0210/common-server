@@ -14,9 +14,18 @@ public class UnifyResponse<T> {
     private String msg;
     private T data;
 
+    public UnifyResponse(Integer code) {
+        this.code = code;
+    }
+
     public UnifyResponse(Integer code, String message) {
         this.code = code;
         this.msg = message;
+    }
+
+    public UnifyResponse(Integer code, T data) {
+        this.code = code;
+        this.data = data;
     }
 
     public UnifyResponse(Integer code, String message, T data) {

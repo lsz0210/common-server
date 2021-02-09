@@ -29,7 +29,7 @@
         <mysql-connector.version>8.0.18</mysql-connector.version>
         <jwt.version>3.8.1</jwt.version>
         <dozer.version>6.5.0</dozer.version>
-        <fastjson.version>1.2.51</fastjson.version>
+        <google.guava.version>25.1-jre</google.guava.version>
     </properties>
     <dependencies>
         <!--spring core-->
@@ -128,7 +128,7 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>25.1-jre</version>
+            <version>${google.guava.version}</version>
         </dependency>
 
         <!--devtools-->
