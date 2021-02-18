@@ -37,7 +37,9 @@ public class TestController {
                     rocketmqDO.getMessageKey(),
                     rocketmqDO.getMessageBody()
             );
-            return new UnifyResponse<>(0, "success", rocketmqOperator.syncProducer(msg));
+//            return new UnifyResponse<>(0, "success", rocketmqOperator.syncProducer(msg));
+            rocketmqOperator.asyncProducer(msg);
+            return new UnifyResponse<>(0);
         } catch (Exception e) {
             e.printStackTrace();
             return new UnifyResponse(10007);
