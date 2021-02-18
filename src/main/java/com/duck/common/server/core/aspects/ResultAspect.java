@@ -11,9 +11,7 @@ import org.springframework.stereotype.Component;
  * 处理返回结果为 UnifyResponseVO 的 Controller
  * message 默认为 null，在此处通过 code 设置为对应消息
  *
- * @author pedro@TaleLin
- * @author colorful@TaleLin
- * @author Juzi@TaleLin
+ * @author imitate by lincms
  */
 @Aspect
 @Component

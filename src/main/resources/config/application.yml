@@ -12,11 +12,25 @@ spring:
     cache: false
     prefer-file-system-access: false #不使用文件系统优先，而使用classpath下的资源文件优先，解决打jar包运行后，出现的异常问题
 
-
+#Mybatis
 mybatis-plus:
   # mapper路径位置
   mapper-locations: classpath:mapper/*.xml
   type-handlers-package: com.duck.common.server.core.utils.JsonTypeHandler
+  configuration:
+    #默认下划线转驼峰
+    map-underscore-to-camel-case: true
+    #一级缓存，默认为 SESSION 同一个session相同查询语句不会再次查询数据库 单体服务架构下，开启session不会影响业务，只会提升性能
+    local-cache-scope: session
+    #二级缓存 默认开启
+    cache-enabled: true
+  global-config:
+    #启动时 初始化 SqlRunner
+    enableSqlRunner: true
+    db-config:
+      logicDeleteField: delete_time
+      logic-delete-value: NOW()
+      logic-not-delete-value: 'NULL'
 
 logging:
   file:
