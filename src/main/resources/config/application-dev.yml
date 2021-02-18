@@ -22,4 +22,8 @@ logging:
         common:
           server: debug
 
-
+rocketmq:
+  config:
+    namesrvAddr: 119.45.59.246:9876
+    groupName: producerGroup1
+    messageTopic: producerGroupTopic1
