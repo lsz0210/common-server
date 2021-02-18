@@ -1,12 +1,9 @@
 package com.duck.common.server.core.rocketmq;
 
 import com.duck.common.server.core.exceptions.http.ServerErrorException;
-import org.apache.rocketmq.client.exception.MQBrokerException;
-import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;
 import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,17 +19,10 @@ public class RocketmqOperator {
     /**
      * 同步消息
      *
-     * @param rocketmqDO
+     * @param msg
      * @throws Exception
      */
-    public String syncProducer(RocketmqDO rocketmqDO) throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
-
-        // 创建消息，并指定Topic，Tag和消息体
-        Message msg = new Message(rocketmqDO.getMessageTopic(),
-                rocketmqDO.getMessageTag(),
-                rocketmqDO.getMessageKey(),
-                rocketmqDO.getMessageBody()
-        );
+    public String syncProducer(Message msg) throws Exception {
 
         // 发送消息到一个Broker
         SendResult sendResult = rocketmqProducer.getProducer().send(msg);
@@ -43,7 +33,6 @@ public class RocketmqOperator {
         }else {
             throw new ServerErrorException(10007);
         }
-
     }
 
 }

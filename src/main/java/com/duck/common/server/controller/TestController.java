@@ -5,6 +5,7 @@ import com.duck.common.server.core.rocketmq.RocketmqDO;
 import com.duck.common.server.core.rocketmq.RocketmqOperator;
 import com.duck.common.server.core.rocketmq.RocketmqProducer;
 import com.duck.common.server.core.utils.RedisOperator;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,8 +31,13 @@ public class TestController {
     @PostMapping("/rocketmqProducer")
     public UnifyResponse rocketmqProducer(@RequestBody RocketmqDO rocketmqDO) {
         try {
-
-            return new UnifyResponse<>(0, "success", rocketmqOperator.syncProducer(rocketmqDO));
+            // 创建消息，并指定Topic，Tag和消息体
+            Message msg = new Message(rocketmqDO.getMessageTopic(),
+                    rocketmqDO.getMessageTag(),
+                    rocketmqDO.getMessageKey(),
+                    rocketmqDO.getMessageBody()
+            );
+            return new UnifyResponse<>(0, "success", rocketmqOperator.syncProducer(msg));
         } catch (Exception e) {
             e.printStackTrace();
             return new UnifyResponse(10007);
