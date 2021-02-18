@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
+ * 请求参数过滤器，实现自定义requestwrapper读取imputstream再重新写回
  * @author 5duck
  * @date 2021-02-09
  */
