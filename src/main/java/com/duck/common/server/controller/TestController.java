@@ -69,4 +69,9 @@ public class TestController {
     public UnifyResponse getJson(){
         return new UnifyResponse<>(0,"success",jsonService.getById(1));
     }
+
+    @GetMapping("/delete")
+    public UnifyResponse delete(){
+        return new UnifyResponse<>(0,"success",jsonService.removeById(2));
+    }
 }
