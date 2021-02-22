@@ -5,9 +5,15 @@ import com.duck.common.server.core.rocketmq.RocketmqDO;
 import com.duck.common.server.core.rocketmq.RocketmqOperator;
 import com.duck.common.server.core.rocketmq.RocketmqProducer;
 import com.duck.common.server.core.utils.RedisOperator;
+import com.duck.common.server.model.Json;
+import com.duck.common.server.model.JsonBody;
+import com.duck.common.server.service.JsonService;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 5duck
@@ -46,4 +52,21 @@ public class TestController {
         }
     }
 
+    @Autowired
+    private JsonService jsonService;
+
+    @PostMapping("/json")
+    public void json(@RequestBody JsonBody jsonBody){
+        Json json = new Json();
+        json.setJson(jsonBody);
+        List<JsonBody> jsonList = new ArrayList<>();
+        jsonList.add(jsonBody);
+        json.setList(jsonList);
+        jsonService.save(json);
+    }
+
+    @GetMapping("/getJson")
+    public UnifyResponse getJson(){
+        return new UnifyResponse<>(0,"success",jsonService.getById(1));
+    }
 }

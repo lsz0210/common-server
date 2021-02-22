@@ -30,6 +30,8 @@
         <jwt.version>3.8.1</jwt.version>
         <dozer.version>6.5.0</dozer.version>
         <google.guava.version>25.1-jre</google.guava.version>
+        <rocketmq-client.version>4.4.0</rocketmq-client.version>
+        <kafka-client.version>2.7.0</kafka-client.version>
     </properties>
     <dependencies>
         <!--spring core-->
@@ -162,8 +164,14 @@
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
             <artifactId>rocketmq-client</artifactId>
-            <version>4.4.0</version>
+            <version>${rocketmq-client.version}</version>
         </dependency>
+        <!--    kafka    -->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.kafka</groupId>-->
+<!--            <artifactId>kafka-clients</artifactId>-->
+<!--            <version>${kafka-client.version}</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

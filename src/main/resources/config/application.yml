@@ -16,7 +16,6 @@ spring:
 mybatis-plus:
   # mapper路径位置
   mapper-locations: classpath:mapper/*.xml
-  type-handlers-package: com.duck.common.server.core.utils.JsonTypeHandler
   configuration:
     #默认下划线转驼峰
     map-underscore-to-camel-case: true
