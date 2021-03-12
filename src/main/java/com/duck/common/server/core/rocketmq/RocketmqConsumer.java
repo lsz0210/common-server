@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
+ * 消费者服务，原则上应该与生产者服务放在不同的java服务中启动
  * @author 5duck
  * @date 2021-02-18
  */
@@ -38,16 +39,20 @@ public class RocketmqConsumer {
         consumer.subscribe(topic, "*");
         // 注册回调实现类来处理从broker拉取回来的消息
         consumer.registerMessageListener(new MessageListenerConcurrently() {
+
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
-                log.info("Consume start time :{}", System.currentTimeMillis());
                 for (MessageExt message : msgs) {
                     String tags = message.getTags();
                     String body = new String(message.getBody());
-                    System.out.println("Msg tag : " + tags);
-                    System.out.println("Msg body : " + body);
+                    try{
+                        log.info("Msg tag : " + tags);
+                        log.info("Msg body : " + body);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        return ConsumeConcurrentlyStatus.RECONSUME_LATER;
+                    }
                 }
-                log.info("Consume end time :{}", System.currentTimeMillis());
 //                System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
                 // 标记该消息已经被成功消费
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
@@ -55,6 +60,6 @@ public class RocketmqConsumer {
         });
         // 启动消费者实例
         consumer.start();
-        System.out.printf("Consumer Started.%n");
+        System.out.printf("RocketMq Consumer Started.%n");
     }
 }

@@ -63,4 +63,16 @@ public class RocketmqOperator {
         });
     }
 
+    /**
+     * 单向推送
+     * @param msg
+     * @throws RemotingException
+     * @throws MQClientException
+     * @throws InterruptedException
+     */
+    public void oneWayProducer(Message msg)throws RemotingException, MQClientException, InterruptedException {
+
+        rocketmqProducer.getProducer().sendOneway(msg);
+    }
+
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PreDestroy;
 
 /**
+ * 生产者服务，原则上应该与消费者服务放在不同的java服务中启动
  * @author 5duck
  * @date 2021-02-18
  */
@@ -30,6 +31,10 @@ public class RocketmqProducer {
         producer.setNamesrvAddr(namesrvAddr);
         // 默认3秒超时，改为5秒
         producer.setSendMsgTimeout(5000);
+        // 默认重试两次失败，改为三次
+        producer.setRetryTimesWhenSendFailed(3);
+        //关闭vip
+        producer.setVipChannelEnabled(false);
         // 启动Producer实例
         producer.start();
     }
